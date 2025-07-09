@@ -189,3 +189,17 @@ ZZMax = ZZPhase(0.5)
 
 def PhasedX(param0: float, param1: float) -> jax.Array:
     return Rz(param1) @ Rx(param0) @ Rz(-param1)
+
+
+def TK2(param_xx: float, param_yy: float, param_zz: float) -> jnp.ndarray:
+    xx_phase = XXPhase(param_xx).reshape(4, 4)
+    yy_phase = YYPhase(param_yy).reshape(4, 4)
+    zz_phase = ZZPhase(param_zz).reshape(4, 4)
+    return (xx_phase @ yy_phase @ zz_phase).reshape((2,) * 4)
+
+
+def TK1(alpha: float, beta: float, gamma: float) -> jnp.ndarray:
+    z1_phase = Rz(alpha)
+    x_phase = Rx(beta)
+    z2_phase = Rz(gamma)
+    return (z1_phase @ x_phase @ z2_phase)
